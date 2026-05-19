@@ -1,0 +1,27 @@
+#  just search k8s pvc file in minikube and copy and edit after your name and requirement 
+# API version
+apiVersion: v1
+
+# Kubernetes object type
+kind: PersistentVolumeClaim
+
+metadata:
+  # PVC name
+  name: mongodb-pvc
+
+  # Namespace where PVC exists
+  namespace: chat-app
+
+spec:
+  # Same access mode as PV
+  accessModes:
+    - ReadWriteOnce
+
+  # VERY IMPORTANT
+  # Must match PV storageClassName
+  storageClassName: manual
+
+  # Storage request
+  resources:
+    requests:
+      storage: 500Mi

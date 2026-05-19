@@ -1,0 +1,28 @@
+##  just search k8s pv file in minikube and copy and edit after your name and requirement 
+# API version for PersistentVolume resource
+apiVersion: v1
+
+# Type of Kubernetes object
+kind: PersistentVolume
+
+metadata:
+  # Name of the PV
+  name: mongodb-pv
+
+spec:
+  # Total storage size
+  capacity:
+    storage: 500Mi
+
+  # Access mode
+  # ReadWriteOnce = only one node can mount it as read-write
+  accessModes:
+    - ReadWriteOnce
+
+  # Custom storage class name
+  # This prevents Kubernetes from creating automatic storage
+  storageClassName: manual
+
+  # Actual storage location inside Minikube node
+  hostPath:
+    path: /data/mongodb

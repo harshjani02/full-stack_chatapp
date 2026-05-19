@@ -1,0 +1,73 @@
+# Deployment API version
+apiVersion: apps/v1
+
+# Resource type
+kind: Deployment
+
+metadata:
+  # Deployment name
+  name: mongodb-deployment
+
+  # Namespace
+  namespace: chat-app
+
+spec:
+  # Number of pods
+  replicas: 1
+
+  # Deployment finds pods using this label
+  selector:
+    matchLabels:
+      app: mongodb
+
+  # Pod template
+  template:
+
+    metadata:
+      labels:
+        app: mongodb
+
+    spec:
+      containers:
+
+        # Container name
+        - name: mongodb
+
+          # MongoDB Docker image
+          image: mongo:latest
+
+          # MongoDB container port
+          ports:
+            - containerPort: 27017
+
+          # Environment variables
+          env:
+
+            # MongoDB admin username
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: mongoadmin
+
+            # MongoDB admin password
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: secret
+
+          # Mount storage inside container
+          volumeMounts:
+
+            # Volume name
+            - name: mongo-data
+
+              # MongoDB stores data here internally
+              mountPath: /data/db
+
+      # Attach PVC to pod
+      volumes:
+
+        # Volume name
+        - name: mongo-data
+
+          # Use PVC
+          persistentVolumeClaim:
+
+            # PVC name
+            claimName: mongodb-pvc
